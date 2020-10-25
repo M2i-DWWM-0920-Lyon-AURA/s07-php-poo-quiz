@@ -9,9 +9,10 @@ final class Answer extends AbstractModel
 {
     /**
      * @var string $description Answer description
+     * @var int $rank Answer order in question
      * @var int $questionId Related question ID
      */
-    protected $description, $questionId;
+    protected $description, $rank, $questionId;
 
     /**
      * Create new answer
@@ -20,12 +21,13 @@ final class Answer extends AbstractModel
      * @param string $description Answer description
      * @param int $questionId Related question ID
      */
-    public function __construct(?int $id = null, string $description = '', ?int $questionId = null)
+    public function __construct(?int $id = null, string $description = '', int $rank = 0, ?int $questionId = null)
     {
         parent::__construct($id);
 
         $this
             ->setDescription($description)
+            ->setRank($rank)
         ;
 
         $this->questionId = $questionId;
@@ -73,6 +75,7 @@ final class Answer extends AbstractModel
             'answers',
             [
                 'description' => 'description',
+                'rank' => 'rank',
                 'questionId' => 'question_id',
             ]
         );
@@ -87,6 +90,7 @@ final class Answer extends AbstractModel
             'answers',
             [
                 'description' => 'description',
+                'rank' => 'rank',
                 'questionId' => 'question_id',
             ]
         );
@@ -101,7 +105,7 @@ final class Answer extends AbstractModel
     }    
 
     /**
-     * Get $questionId Related question ID
+     * Get description
      *
      * @return  string
      */ 
@@ -111,15 +115,39 @@ final class Answer extends AbstractModel
     }
 
     /**
-     * Set $questionId Related question ID
+     * Set description
      *
-     * @param  string  $description  $questionId Related question ID
+     * @param  string  $description  New description
      *
      * @return  self
      */ 
     public function setDescription(string $description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get rank
+     *
+     * @return  int
+     */ 
+    public function getRank(): int
+    {
+        return $this->rank;
+    }
+
+    /**
+     * Set rank
+     *
+     * @param  int  $rank  $questionId New rank
+     *
+     * @return  self
+     */ 
+    public function setRank(int $rank)
+    {
+        $this->rank = $rank;
 
         return $this;
     }
