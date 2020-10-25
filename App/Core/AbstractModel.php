@@ -210,9 +210,11 @@ abstract class AbstractModel
      */
     static protected function fetchAllFromStatement(\PDOStatement $statement): array
     {
+        // Récupère le nom de la classe depuis laquelle cette méthode a été appelée
         $className = \get_called_class();
-
-        $statement->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $className);
+        // Demande à l'interface de base de données de récupérer l'ensemble
+        // des résultats de la requête, en passant chaque résultat à travers
+        // la fonction createInstance() de la classe appelante
         return $statement->fetchAll(\PDO::FETCH_FUNC, [$className, 'createInstance']);
     }
 
@@ -225,12 +227,15 @@ abstract class AbstractModel
      */
     static protected function fetchOneOrNull(\PDOStatement $statement): ?AbstractModel
     {
+        // Récupère tous les résultats de la requête sous forme d'objets
         $result = static::fetchAllFromStatement($statement);
 
+        // Si la liste des résultats est vide, renvoyer null
         if (empty($result)) {
             return null;
         }
 
+        // Sinon, renvoyer le premier résultat de la liste
         return $result[0];
     }
     
@@ -282,9 +287,13 @@ abstract class AbstractModel
      */
     public function save(): void
     {
+        // Si l'objet n'existe pas encore en base de données
         if (is_null($this->getId())) {
+            // Crée un nouvel enregistrement en base de données correspondant à cet objet
             $this->insert();
+        // Sinon
         } else {
+            // Met à jour les propriétés de l'enregistrement existant correspondant à cet objet
             $this->update();
         }
     }
@@ -298,25 +307,43 @@ abstract class AbstractModel
     protected function insertInTable(string $tableName, array $properties): void
     {
         $params = [];
+        // Pour chaque paramètre passé par le modèle concret
         foreach ($properties as $propName => $dbName) {
+            // Construit un tableau avec les noms des paramètres entre bacticks (`)
+            // Ce sera la liste des propriétés à définir dans la table
             $propNames []= "`$dbName`";
+            // Construit un autre tableau avec les noms des paramètres précédés par un :
+            // Ce sera la liste des champs variables dans lesquels on injectera les valeurs
             $valueNames []= ":$propName";
+            // Construit un autre tableau faisant correspondre à chaque nom de champ variable
+            // la valeur de l'objet qu'il faudra injecter
             $params[":$propName"] = $this->$propName;
         }
 
+        // Fusionne la liste des propriétés à définir en joignant chaque élément avec une virgule
         $propNames = join(', ', $propNames);
+        // Fusionne la liste des champs variables en joignant chaque élément avec une virgule
         $valueNames = join(', ', $valueNames);
 
+        // Construit un tableau qui contient les différentes lignes de la requête
         $queryArray = [
+            // Ajoute la commande et le nom de la table concernée
             "INSERT INTO `$tableName`",
+            // Ajoute les propriétés à définir
             '( ' . $propNames . ' )',
+            // Ajoute des champs variables correspondants aux propriétés
             'VALUES (' . $valueNames . ')',
         ];
+        // Fusionne le tableau en joignant chaque élément avec un saut de ligne (\n)
         $query = join("\n", $queryArray);
 
+        // Prépare la requête et l'exécute en injectant les valeurs de l'objet actuel
         $statement = DatabaseHandler::prepare($query);
         $statement->execute($params);
 
+        // Récupère le dernier ID inséré en base de données et l'affecte à cet objet
+        // Cela évite que l'objet continue à se comporter comme s'il n'existait pas
+        // encore en base de données
         $this->id = DatabaseHandler::lastInsertId();
     }
 
@@ -328,22 +355,36 @@ abstract class AbstractModel
      */
     protected function updateInTable(string $tableName, array $properties): void
     {
+        // Ajoute l'ID aux paramètres passés par le modèle concret
         $params = [ ':id' => 'id' ];
+        // Pour chaque paramètre passé par le modèle concret
         foreach ($properties as $propName => $dbName) {
+            // Construit un tableau avec le nom de propriété entre backticks (`) égal à un champ variable
+            // précédé d'un :
             $values []= "`$dbName` = :$propName";
+            // Construit un autre tableau faisant correspondre à chaque nom de champ variable
+            // la valeur de l'objet qu'il faudra injecter
             $params[":$propName"] = $this->$propName;
         }
 
+        // Fusionne la liste des propriétés à définir en joignant chaque élément avec une virgule
+        // et un saut de ligne (\n)
         $values = join(",\n", $values);
 
+        // Construit un tableau qui contient les différentes lignes de la requête
         $queryArray = [
+            // Ajoute la commande et le nom de la table concernée
             "UPDATE `$tableName`",
             'SET',
+            // Ajoute la liste des propriétés 
             $values,
+            // Ajoute la condition permettant d'identifier l'enregistrement à modifier
             "WHERE `id` = :id"
         ];
+        // Fusionne le tableau en joignant chaque élément avec un saut de ligne (\n)
         $query = join("\n", $queryArray);
 
+        // Prépare la requête et l'exécute en injectant les valeurs de l'objet actuel
         $statement = DatabaseHandler::prepare($query);
         $statement->execute($params);
     }
@@ -366,7 +407,10 @@ abstract class AbstractModel
      */
     public function createInstance(...$params): AbstractModel
     {
+        // Récupère le nom de la classe depuis laquelle cette méthode a été appelée
         $className = \get_called_class();
+        // Crée une nouvelle instance de la classe demandée, et passe à son constructeur
+        // l'ensemble des arguments passés à cette fonction
         return new $className(...$params);
     }
 
