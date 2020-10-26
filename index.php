@@ -7,9 +7,9 @@ require_once './vendor/autoload.php';
 $router = new AltoRouter();
 
 // Génère la route pour la page d'accueil
-$router->map('GET', '/', 'home.php');
+$router->map('GET', '/', 'MainController#home');
 // Génère la route pour la liset des quiz
-$router->map('GET', '/quiz', 'quiz-list.php');
+$router->map('GET', '/quiz', 'QuizController#list');
 // Prend la requête actuelle et cherche une correspondance avec les routes connues
 $match = $router->match();
 
@@ -17,5 +17,11 @@ $match = $router->match();
 if ($match === false) {
     include './templates/page-not-found.php';
 } else {
-    include './templates/' . $match['target'];
+    // Découpe la chaîne de caractère reçue en la séparant au niveau du #
+    list($controllerName, $methodName) = explode('#', $match['target']);
+    // Crée un contrôleur à partir du nom contenu dans la première portion
+    $controllerName = "App\\Controller\\$controllerName";
+    $controller = new $controllerName;
+    // Appelle la méthode dont le nom est contenu dans la seconde portion
+    $controller->$methodName();
 }
