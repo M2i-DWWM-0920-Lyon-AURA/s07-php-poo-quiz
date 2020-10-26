@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\Quiz;
 use App\View\StandardView;
+use App\Exception\RecordNotFoundException;
 
 class QuizController
 {
@@ -27,10 +28,19 @@ class QuizController
      */
     public function single(int $id)
     {
+        // Récupère le quiz correspondant à l'ID demandé
+        $quiz = Quiz::findById($id);
+
+        // Si le quiz n'existe pas
+        if (is_null($quiz)) {
+            throw new RecordNotFoundException("Quiz #$id could not be found.");
+        }
+
+        // Renvoie une vue permettant d'afficher les données d'un seul quiz
         $view = new StandardView(
             [ 'head/meta' ],
             [ 'quiz/single' ],
-            [ 'quiz' => Quiz::findById($id) ]
+            [ 'quiz' => $quiz ]
         );
         $view->render();
     }
