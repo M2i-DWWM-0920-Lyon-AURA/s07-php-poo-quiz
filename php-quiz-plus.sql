@@ -5,6 +5,10 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
+DROP DATABASE IF EXISTS `php-quiz-plus`;
+CREATE DATABASE `php-quiz-plus` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `php-quiz-plus`;
+
 DROP TABLE IF EXISTS `answers`;
 CREATE TABLE `answers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -95,4 +99,4 @@ INSERT INTO `quizzes` (`id`, `title`, `description`) VALUES
 (1,	'Divers faits étonnants',	'Etonnez-vous avec ces petites choses de la vie quotidienne que vous ignorez probablement!'),
 (2,	'The Big Bang Theory',	'Êtes-vous un vrai fan de The Big Bang Theory? Pour le savoir, un seul moyen: répondez à ce quiz ultime sur la série!');
 
--- 2020-10-25 21:07:24
+-- 2020-10-26 08:39:19
