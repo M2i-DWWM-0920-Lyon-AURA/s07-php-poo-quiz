@@ -44,5 +44,6 @@ catch (RecordNotFoundException $exception) {
     $response = $controller->notFound();
 }
 
+// Une fois que le contrôleur approprié a été appelé, affiche le résultat
 $response->render();
 die();
