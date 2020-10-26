@@ -1,6 +1,7 @@
 <?php
 
 use App\View\StandardView;
+use App\Controller\ErrorController;
 
 // Utilise le chargement automatique de Composer
 require_once './vendor/autoload.php';
@@ -19,11 +20,8 @@ $match = $router->match();
 
 // Si la requête ne correspond à aucune route connue
 if ($match === false) {
-    $view = new StandardView(
-        [ 'head/meta' ],
-        [ 'error/not-found' ]
-    );
-    $view->render();
+    $controller = new ErrorController;
+    $controller->notFound();
     die();
 } else {
     // Extrait toutes les valeurs des paramètres présents dans l'URL
