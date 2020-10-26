@@ -24,8 +24,7 @@ try {
     // Si la requête ne correspond à aucune route connue
     if ($match === false) {
         $controller = new ErrorController;
-        $controller->notFound();
-        die();
+        $response = $controller->notFound();
     } else {
         // Extrait toutes les valeurs des paramètres présents dans l'URL
         $params = array_values($match['params']);
@@ -36,11 +35,14 @@ try {
         $controller = new $controllerName;
         // Appelle la méthode dont le nom est contenu dans la seconde portion
         // en lui passant l'ensemble des paramètres récupérés dans l'URL
-        $controller->$methodName(...$params);
+        $response = $controller->$methodName(...$params);
     }
 }
 // Si une erreur liée à un enregistrement non existant en BDD est détectée
 catch (RecordNotFoundException $exception) {
     $controller = new ErrorController;
-    $controller->notFound();
+    $response = $controller->notFound();
 }
+
+$response->render();
+die();

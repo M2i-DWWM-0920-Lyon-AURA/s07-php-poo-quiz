@@ -13,12 +13,11 @@ class QuizController
      */
     public function list()
     {
-        $view = new StandardView(
+        return new StandardView(
             [ 'head/meta' ],
             [ 'quiz/list' ],
             [ 'quizzes' => Quiz::findAll() ]
         );
-        $view->render();
     }
 
     /**
@@ -37,11 +36,10 @@ class QuizController
         }
 
         // Renvoie une vue permettant d'afficher les données d'un seul quiz
-        $view = new StandardView(
+        return new StandardView(
             [ 'head/meta' ],
             [ 'quiz/single' ],
             [ 'quiz' => $quiz ]
         );
-        $view->render();
     }
 }

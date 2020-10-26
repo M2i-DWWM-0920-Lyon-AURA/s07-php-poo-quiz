@@ -8,10 +8,9 @@ class ErrorController
 {
     public function notFound()
     {
-        $view = new StandardView(
+        return new StandardView(
             [ 'head/meta' ],
             [ 'error/not-found' ]
         );
-        $view->render();
     }
 }

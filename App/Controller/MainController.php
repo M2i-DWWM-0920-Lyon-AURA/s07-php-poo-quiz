@@ -11,10 +11,9 @@ class MainController
      */
     public function home()
     {
-        $view = new StandardView(
+        return new StandardView(
             [ 'head/meta' ],
             [ 'main/home' ]
         );
-        $view->render();
     }
 }
