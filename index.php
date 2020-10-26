@@ -1,5 +1,7 @@
 <?php
 
+use App\View\StandardView;
+
 // Utilise le chargement automatique de Composer
 require_once './vendor/autoload.php';
 
@@ -17,7 +19,12 @@ $match = $router->match();
 
 // Si la requête ne correspond à aucune route connue
 if ($match === false) {
-    include './templates/page-not-found.php';
+    $view = new StandardView(
+        [ 'head/meta' ],
+        [ 'error/not-found' ]
+    );
+    $view->render();
+    die();
 } else {
     // Extrait toutes les valeurs des paramètres présents dans l'URL
     $params = array_values($match['params']);

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\View\StandardView;
+
 class MainController
 {
     /**
@@ -9,6 +11,10 @@ class MainController
      */
     public function home()
     {
-        include './templates/home.php';
+        $view = new StandardView(
+            [ 'head/meta' ],
+            [ 'main/home' ]
+        );
+        $view->render();
     }
 }

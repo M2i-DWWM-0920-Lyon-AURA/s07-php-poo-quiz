@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Quiz;
+use App\View\StandardView;
 
 class QuizController
 {
@@ -11,9 +12,12 @@ class QuizController
      */
     public function list()
     {
-        $quizzes = Quiz::findAll();
-
-        include './templates/quiz-list.php';
+        $view = new StandardView(
+            [ 'head/meta' ],
+            [ 'quiz/list' ],
+            [ 'quizzes' => Quiz::findAll() ]
+        );
+        $view->render();
     }
 
     /**
@@ -23,8 +27,11 @@ class QuizController
      */
     public function single(int $id)
     {
-        $quiz = Quiz::findById($id);
-
-        include './templates/quiz-single.php';
+        $view = new StandardView(
+            [ 'head/meta' ],
+            [ 'quiz/single' ],
+            [ 'quiz' => Quiz::findById($id) ]
+        );
+        $view->render();
     }
 }
