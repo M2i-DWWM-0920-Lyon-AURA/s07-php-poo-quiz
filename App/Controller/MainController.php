@@ -12,8 +12,8 @@ class MainController
     public function home()
     {
         return new StandardView(
-            [ 'head/meta' ],
-            [ 'main/home' ]
+            [ 'head/meta', 'head/bootstrap' ],
+            [ 'layout/navbar', 'main/home', 'layout/footer' ]
         );
     }
 }

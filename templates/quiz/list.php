@@ -4,7 +4,9 @@
 
     <?php foreach ($quizzes as $quiz): ?>
     <li>
+        <a href="/quiz/<?= $quiz->getId() ?>">
         <?= $quiz->getTitle() ?>
+        </a>
     </li>
     <?php endforeach; ?>
 
