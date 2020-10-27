@@ -5,6 +5,8 @@ namespace App\Core;
 // ================================================================
 // Singleton
 // ----------------------------------------------------------------
+// https://refactoring.guru/fr/design-patterns/singleton
+// ----------------------------------------------------------------
 // ~ Le Singleton est un design pattern (schéma de conception) qui
 // permet de s'assurer qu'il ne pourra jamais exister qu'une et
 // une seule instance d'une classe.

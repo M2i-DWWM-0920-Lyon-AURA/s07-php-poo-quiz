@@ -14,8 +14,7 @@ class QuizController
     public function list()
     {
         return new StandardView(
-            [ 'head/meta', 'head/bootstrap' ],
-            [ 'layout/navbar', 'quiz/list', 'layout/footer' ],
+            [ 'quiz/list' ],
             [ 'quizzes' => Quiz::findAll() ]
         );
     }
@@ -37,8 +36,7 @@ class QuizController
 
         // Renvoie une vue permettant d'afficher les données d'un seul quiz
         return new StandardView(
-            [ 'head/meta', 'head/bootstrap' ],
-            [ 'layout/navbar', 'quiz/single', 'layout/footer' ],
+            [ 'quiz/single', ],
             [ 'quiz' => $quiz ]
         );
     }

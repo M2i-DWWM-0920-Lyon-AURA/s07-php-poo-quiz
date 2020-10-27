@@ -2,31 +2,43 @@
 
 namespace App\View;
 
-class StandardView
+use App\Core\AbstractView;
+
+class StandardView extends AbstractView
 {
     /**
-     * @var array $headTemplates List of templates to be included in page head
-     * @var array $bodyTemplates List of templates to be included in page body
-     * @var array $variables Associative array matching variable names to values
+     * @var array $templates List of templates to display inside body
+     * @var array $variables Associative array matchin variables names to values
      */
-    protected $headTemplates, $bodyTemplates, $variables;
+    protected $templates, $variables;
 
     /**
-     * @param array $headTemplates List of templates to be included in page head
-     * @param array $bodyTemplates List of templates to be included in page body
-     * @param array $variables Associative array matching variable names to values
+     * Create new standard view
+     * 
+     * @param array $templates List of templates to display inside body
+     * @param array $variables Associative array matchin variables names to values
      */
-    public function __construct(array $headTemplates, array $bodyTemplates, array $variables = [])
+    public function __construct(array $templates, array $variables = [])
     {
-        $this->headTemplates = $headTemplates;
-        $this->bodyTemplates = $bodyTemplates;
+        $this->templates = $templates;
         $this->variables = $variables;
     }
 
     /**
-     * Render page as HTML
+     * Render page head
      */
-    public function render()
+    protected function renderHead(): void
+    {
+        // Inclue le template meta
+        include './templates/head/meta.php';
+        // Inclue le template bootstrap
+        include './templates/head/bootstrap.php';
+    }
+
+    /**
+     * Render page body
+     */
+    protected function renderBody(): void
     {
         // Pour chaque couple de nom de variable/valeur
         foreach ($this->variables as $varName => $value) {
@@ -35,25 +47,21 @@ class StandardView
             $$varName = $value;
         }
 
-        // Ecrit le contenu de la page
-        echo '<!DOCTYPE html>' . PHP_EOL;
-        echo '<html lang="fr">' . PHP_EOL;
-        echo '<head>' . PHP_EOL;
+        echo '<header>' . PHP_EOL;
+        // Inclue le template navbar
+        include './templates/layout/navbar.php';
+        echo '</header>' . PHP_EOL;
 
-        // Charge les templates contenus dans le head
-        foreach ($this->headTemplates as $template) {
+        echo '<div class="container">' . PHP_EOL;
+        echo '<main>' . PHP_EOL;
+        // Inclue les templates fournis lors de la création de l'objet
+        foreach ($this->templates as $template) {
             include './templates/' . $template . '.php';
         }
+        echo '</main>' . PHP_EOL;
+        echo '</div>' . PHP_EOL;
 
-        echo '</head>' . PHP_EOL;
-        echo '<body>' . PHP_EOL;
-
-        // Charge les templates contenus dans le body
-        foreach ($this->bodyTemplates as $template) {
-            include './templates/' . $template . '.php';
-        }
-
-        echo '</body>' . PHP_EOL;
-        echo '</html>' . PHP_EOL;
+        // Inclue le template footer
+        include './templates/layout/footer.php';
     }
 }

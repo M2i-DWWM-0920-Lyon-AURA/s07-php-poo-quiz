@@ -16,8 +16,7 @@ class ErrorController
         \http_response_code(404);
 
         return new StandardView(
-            [ 'head/meta', 'head/bootstrap' ],
-            [ 'layout/navbar', 'error/not-found', 'layout/footer' ]
+            [ 'error/not-found' ]
         );
     }
 }
