@@ -50,6 +50,7 @@ try {
     $router->map('GET', '/', 'MainController#home');
     $router->map('GET', '/quiz', 'QuizController#list');
     $router->map('GET', '/quiz/[i:id]', 'QuizController#single');
+    $router->map('GET', '/quiz/[i:id]/result', 'QuizController#result');
     $router->map('GET', '/question/[i:id]', 'QuestionController#single');
     $router->map('POST', '/question/[i:id]/give-answer', 'QuestionController#processAnswer');
     // Prend la requête actuelle et cherche une correspondance avec les routes connues

@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Model\Quiz;
 use App\Model\Answer;
 use App\Core\AbstractModel;
+use App\Core\DatabaseHandler;
 
 final class Question extends AbstractModel
 {
@@ -203,5 +204,26 @@ final class Question extends AbstractModel
     public function getAnswers(): array
     {
         return $this->getOneToMany(Answer::class, 'question_id');
+    }
+
+    /**
+     * Get next question in current quiz
+     * 
+     * @return Question|null
+     */
+    public function getNextQuestionInQuiz(): ?Question
+    {
+        $statement = DatabaseHandler::prepare('
+            SELECT * FROM `questions`
+            WHERE `quiz_id` = :quizId
+            ORDER BY `rank`
+            LIMIT 1
+            OFFSET :rank
+        ');
+        $statement->execute([
+            ':quizId' => $this->quizId,
+            ':rank' => $this->rank,
+        ]);
+        return static::fetchOneOrNull($statement);
     }
 }

@@ -40,4 +40,26 @@ class QuizController
             [ 'quiz' => $quiz ]
         );
     }
+
+    /**
+     * Display result to taken quiz
+     */
+    public function result(int $id)
+    {
+        \session_start();
+
+        // Récupère le quiz correspondant à l'ID demandé
+        $quiz = Quiz::findById($id);
+
+        // Si le quiz n'existe pas
+        if (is_null($quiz)) {
+            throw new RecordNotFoundException("Quiz #$id could not be found.");
+        }
+
+        // Renvoie une vue permettant d'afficher les données d'un seul quiz
+        return new StandardView(
+            [ 'common/alert', 'quiz/result' ],
+            [ 'quiz' => $quiz ]
+        );
+    }
 }
