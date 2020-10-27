@@ -12,6 +12,7 @@
 // Utilise le chargement automatique de Composer
 require_once './vendor/autoload.php';
 
+use App\Core\AbstractView;
 use App\View\StandardView;
 use App\Controller\ErrorController;
 use App\Exception\RecordNotFoundException;
@@ -79,6 +80,12 @@ catch (RecordNotFoundException $exception) {
     // Renvoie une page "Page non trouvée"
     $controller = new ErrorController;
     $response = $controller->notFound();
+}
+
+// Vérifie que le contrôleur a bien renvoyé une vue
+if (!$response instanceof AbstractView) {
+    $type = \gettype($response);
+    throw new \Exception("Controllers must return a view ($type given).");
 }
 
 // Une fois que le contrôleur approprié a été appelé, affiche le résultat

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\AbstractView;
 use App\View\StandardView;
 
 class MainController
@@ -9,7 +10,7 @@ class MainController
     /**
      * Display home page
      */
-    public function home()
+    public function home(): AbstractView
     {
         return new StandardView(
             [ 'main/home' ]

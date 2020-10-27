@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Quiz;
+use App\Core\AbstractView;
 use App\View\StandardView;
 use App\Exception\RecordNotFoundException;
 
@@ -11,7 +12,7 @@ class QuizController
     /**
      * Display all quizzes
      */
-    public function list()
+    public function list(): AbstractView
     {
         return new StandardView(
             [ 'quiz/list' ],
@@ -24,7 +25,7 @@ class QuizController
      * 
      * @param int $id Quiz id
      */
-    public function single(int $id)
+    public function single(int $id): AbstractView
     {
         // Récupère le quiz correspondant à l'ID demandé
         $quiz = Quiz::findById($id);
@@ -44,7 +45,7 @@ class QuizController
     /**
      * Display result to taken quiz
      */
-    public function result(int $id)
+    public function result(int $id): AbstractView
     {
         \session_start();
 

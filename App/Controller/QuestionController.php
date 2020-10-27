@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Question;
+use App\Core\AbstractView;
 use App\View\StandardView;
 use App\Exception\RecordNotFoundException;
 
@@ -13,7 +14,7 @@ class QuestionController
      * 
      * @param int $id Question database ID
      */
-    public function single(int $id)
+    public function single(int $id): AbstractView
     {
         \session_start();
 
@@ -38,7 +39,7 @@ class QuestionController
      * 
      * @param int $id Queston database ID
      */
-    public function processAnswer(int $id)
+    public function processAnswer(int $id): void
     {
         // Autorise l'accès à la super-globale $_SESSION
         \session_start();
