@@ -1,5 +1,6 @@
+<!-- question/single -->
 <h2 class="mt-4">Question n°<span id="question-id"><?= $question->getRank() ?></span></h2>
-<form id="question-form" method="post">
+<form method="post" action="/question/<?= $question->getId() ?>/give-answer">
     <p id="current-question-text" class="question-text"><?= $question->getDescription() ?></p>
     <div id="answers" class="d-flex flex-column">
 
