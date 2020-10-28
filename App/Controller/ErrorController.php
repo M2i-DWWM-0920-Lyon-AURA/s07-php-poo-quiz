@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\AbstractView;
 use App\View\StandardView;
 
 class ErrorController
