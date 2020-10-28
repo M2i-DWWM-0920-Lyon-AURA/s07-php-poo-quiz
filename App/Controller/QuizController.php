@@ -112,7 +112,7 @@ class QuizController
      * 
      * @param int $id Quiz database ID
      */
-    public function update(int $id): AbstractView
+    public function update(int $id)
     {
         $quiz = Quiz::findById($id);
 
@@ -122,6 +122,20 @@ class QuizController
         ;
 
         $quiz->save();
+
+        header('Location: /create');
+    }
+
+    /**
+     * Delete quiz
+     * 
+     * @param int $id Quiz database ID
+     */
+    public function delete(int $id)
+    {
+        $quiz = Quiz::findById($id);
+
+        $quiz->delete();
 
         header('Location: /create');
     }

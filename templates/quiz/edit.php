@@ -11,3 +11,11 @@
     </div>
     <button type="submit" class="btn btn-primary">Valider les modifications</button>
 </form>
+
+<?php if (!is_null($quiz->getId())): ?>
+<form method="post" action="/quiz/<?= $quiz->getId() ?>/delete">
+    <button type="submit" class="btn btn-danger">
+        Supprimer ce quiz
+    </button>
+</form>
+<?php endif; ?>
