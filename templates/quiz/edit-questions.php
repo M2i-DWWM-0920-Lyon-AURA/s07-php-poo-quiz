@@ -8,6 +8,36 @@
                 <h3 class="card-title">Question n°<?= $question->getRank() ?></h3>
                 <p class="card-text"><?= $question->getDescription() ?></p>
 
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#questionModal<?= $question->getId() ?>">
+                    Modifier
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="questionModal<?= $question->getId() ?>" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modifier la question</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" action="/question/<?= $question->getId() ?>/update">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Description</label>
+                                        <input name="description" type="text" class="form-control" value="<?= $question->getDescription() ?>">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Enregistrer les mnodifications</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <ul class="list-group">
                     <?php foreach ($question->getAnswers() as $answer): ?>
                     <li class="list-group-item">
