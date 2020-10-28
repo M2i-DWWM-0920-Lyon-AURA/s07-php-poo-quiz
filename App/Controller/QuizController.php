@@ -10,6 +10,23 @@ use App\Exception\RecordNotFoundException;
 class QuizController
 {
     /**
+     * Get quiz by id and throws error if quiz is null
+     * 
+     * @param int $id Quiz database ID
+     */
+    protected function findQuizByIdOrException(int $id): Quiz
+    {
+        $quiz = Quiz::findById($id);
+
+        // Si le quiz n'existe pas
+        if (is_null($quiz)) {
+            throw new RecordNotFoundException("Quiz #$id could not be found.");
+        }
+        
+        return $quiz;
+    }
+
+    /**
      * Display all quizzes
      */
     public function list(): AbstractView
@@ -28,12 +45,7 @@ class QuizController
     public function single(int $id): AbstractView
     {
         // Récupère le quiz correspondant à l'ID demandé
-        $quiz = Quiz::findById($id);
-
-        // Si le quiz n'existe pas
-        if (is_null($quiz)) {
-            throw new RecordNotFoundException("Quiz #$id could not be found.");
-        }
+        $quiz = $this->findQuizByIdOrException($id);
 
         // Renvoie une vue permettant d'afficher les données d'un seul quiz
         return new StandardView(
@@ -50,12 +62,7 @@ class QuizController
         \session_start();
 
         // Récupère le quiz correspondant à l'ID demandé
-        $quiz = Quiz::findById($id);
-
-        // Si le quiz n'existe pas
-        if (is_null($quiz)) {
-            throw new RecordNotFoundException("Quiz #$id could not be found.");
-        }
+        $quiz = $this->findQuizByIdOrException($id);
 
         // Renvoie une vue permettant d'afficher les données d'un seul quiz
         return new StandardView(
@@ -99,8 +106,8 @@ class QuizController
      */
     public function updateForm(int $id): AbstractView
     {
-        $quiz = Quiz::findById($id);
-
+        $quiz = $this->findQuizByIdOrException($id);
+        
         return new StandardView(
             [ 'quiz/edit' ],
             [ 'quiz' => $quiz ]
@@ -114,7 +121,7 @@ class QuizController
      */
     public function update(int $id)
     {
-        $quiz = Quiz::findById($id);
+        $quiz = $this->findQuizByIdOrException($id);
 
         $quiz
             ->setTitle($_POST['title'])
@@ -133,7 +140,7 @@ class QuizController
      */
     public function delete(int $id)
     {
-        $quiz = Quiz::findById($id);
+        $quiz = $this->findQuizByIdOrException($id);
 
         $quiz->delete();
 
