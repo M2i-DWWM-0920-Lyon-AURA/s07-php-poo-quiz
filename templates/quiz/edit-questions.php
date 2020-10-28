@@ -6,13 +6,16 @@
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title">Question n°<?= $question->getRank() ?></h3>
-                <p class="card-text"><?= $question->getDescription() ?></p>
+                
+                <div class="d-flex">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-sm mr-2" data-toggle="modal"
+                        data-target="#questionModal<?= $question->getId() ?>">
+                        Modifier
+                    </button>
 
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                    data-target="#questionModal<?= $question->getId() ?>">
-                    Modifier
-                </button>
+                    <p class="card-text"><?= $question->getDescription() ?></p>
+                </div>
 
                 <!-- Modal -->
                 <div class="modal fade" id="questionModal<?= $question->getId() ?>" tabindex="-1"
@@ -38,24 +41,26 @@
                     </div>
                 </div>
 
-                <ul class="list-group">
+                <ul class="list-group mb-4">
                     <?php foreach ($question->getAnswers() as $answer): ?>
                     <li class="list-group-item">
                         <strong>Réponse <?= $answer->getRank() ?>:</strong>
                         <form method="post" action="/answer/<?= $answer->getId() ?>/update" class=" d-flex">
                             <input name="description" type="text" value="<?= $answer->getDescription() ?>" class="form-control" />
-                            <input type="submit" class="btn btn-primary" />
+                            <button type="submit" class="btn btn-primary">
+                                Modifier
+                            </button>
                         </form>
                     </li>
                     <?php endforeach; ?>
                 </ul>
 
                 <form method="post" action="/answer/new">
-                    <div class="form-group">
-                        <input name="question-id" type="hidden" value="<?= $question->getId() ?>" />
+                    <input name="question-id" type="hidden" value="<?= $question->getId() ?>" />
+                    <div class="d-flex">
                         <input name="description" type="text" class="form-control" placeholder="Entrez une nouvelle réponse ici" />
                         <button type="submit" class="btn btn-primary">
-                            Ajouter une nouvelle réponse
+                            Ajouter
                         </button>
                     <div>
                 </form>
@@ -68,12 +73,12 @@
 </ul>
 
 <form method="post" action="/question/new">
-    <div class="form-group">
-        <input name="rank" type="hidden" value="<?= count($quiz->getQuestions()) + 1 ?>" />
-        <input name="quiz-id" type="hidden" value="<?= $quiz->getId() ?>" />
+    <input name="rank" type="hidden" value="<?= count($quiz->getQuestions()) + 1 ?>" />
+    <input name="quiz-id" type="hidden" value="<?= $quiz->getId() ?>" />
+    <div class="d-flex">
         <input name="description" type="text" class="form-control" placeholder="Entrez votre nouvelle question ici">
         <button type="submit" class="btn btn-primary">
-            Ajouter une question
+            Ajouter
         </button>
     </div>
 </form>
