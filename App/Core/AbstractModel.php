@@ -356,7 +356,7 @@ abstract class AbstractModel
     protected function updateInTable(string $tableName, array $properties): void
     {
         // Ajoute l'ID aux paramètres passés par le modèle concret
-        $params = [ ':id' => 'id' ];
+        $params = [ ':id' => $this->getId() ];
         // Pour chaque paramètre passé par le modèle concret
         foreach ($properties as $propName => $dbName) {
             // Construit un tableau avec le nom de propriété entre backticks (`) égal à un champ variable
@@ -383,6 +383,9 @@ abstract class AbstractModel
         ];
         // Fusionne le tableau en joignant chaque élément avec un saut de ligne (\n)
         $query = join("\n", $queryArray);
+
+        var_dump([$query, $params]);
+        die();
 
         // Prépare la requête et l'exécute en injectant les valeurs de l'objet actuel
         $statement = DatabaseHandler::prepare($query);
