@@ -122,4 +122,26 @@ class QuestionController
         // Renvoie sur le formulaire de modification de quiz
         header('Location: /quiz/' . $quiz->getId() . '/update');
     }
+
+    /**
+     * Process question update form
+     * 
+     * @param int $id Question database ID
+     */
+    public function update(int $id)
+    {
+        // Crée une nouvelle question
+        $question = Question::findById($id);
+
+        // Assigne la valeur envoyée par l'utilisateur à la propriété de la question
+        $question
+            ->setDescription($_POST['description'])
+        ;
+
+        // Enregistre la question en base de données
+        $question->save();
+
+        // Renvoie sur le formulaire de modification de quiz
+        header('Location: /quiz/' . $question->getQuiz()->getId() . '/update');
+    }
 }
