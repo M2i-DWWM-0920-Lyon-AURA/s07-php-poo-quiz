@@ -41,7 +41,11 @@
                 <ul class="list-group">
                     <?php foreach ($question->getAnswers() as $answer): ?>
                     <li class="list-group-item">
-                        <strong>Réponse <?= $answer->getRank() ?>:</strong> <?= $answer->getDescription() ?>
+                        <strong>Réponse <?= $answer->getRank() ?>:</strong>
+                        <form method="post" action="/answer/<?= $answer->getId() ?>/update" class=" d-flex">
+                            <input name="description" type="text" value="<?= $answer->getDescription() ?>" class="form-control" />
+                            <input type="submit" class="btn btn-primary" />
+                        </form>
                     </li>
                     <?php endforeach; ?>
                 </ul>

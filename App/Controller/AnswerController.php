@@ -29,4 +29,19 @@ class AnswerController
         // Renvoie sur le formulaire de modification de quiz
         header('Location: /quiz/' . $question->getQuiz()->getId() . '/update');
     }
+
+    /**
+     * Process answer update form
+     */
+    public function update(int $id)
+    {
+        $answer = Answer::findById($id);
+
+        $answer->setDescription($_POST['description']);
+
+        $answer->save();
+
+        // Renvoie sur le formulaire de modification de quiz
+        header('Location: /quiz/' . $answer->getQuestion()->getQuiz()->getId() . '/update');
+    }
 }
