@@ -149,7 +149,7 @@ class QuizController
         // Renvoie une nouvelle vue...
         return new StandardView(
             // ...contenant le formulaire de modification d'un quiz...
-            [ 'quiz/edit' ],
+            [ 'quiz/edit', 'quiz/edit-questions' ],
             // ...ainsi que les donneés du quiz
             [ 'quiz' => $quiz ]
         );
