@@ -46,6 +46,16 @@
                     <?php endforeach; ?>
                 </ul>
 
+                <form method="post" action="/answer/new">
+                    <div class="form-group">
+                        <input name="question-id" type="hidden" value="<?= $question->getId() ?>" />
+                        <input name="description" type="text" class="form-control" placeholder="Entrez une nouvelle réponse ici" />
+                        <button type="submit" class="btn btn-primary">
+                            Ajouter une nouvelle réponse
+                        </button>
+                    <div>
+                </form>
+
             </div>
         </div>
     </li>
