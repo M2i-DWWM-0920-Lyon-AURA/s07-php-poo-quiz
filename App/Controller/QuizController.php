@@ -71,6 +71,7 @@ class QuizController
     {
         return new StandardView(
             [ 'quiz/edit' ],
+            [ 'quiz' => new Quiz ]
         );
     }
 
@@ -80,6 +81,40 @@ class QuizController
     public function create()
     {
         $quiz = new Quiz;
+
+        $quiz
+            ->setTitle($_POST['title'])
+            ->setDescription($_POST['description'])
+        ;
+
+        $quiz->save();
+
+        header('Location: /create');
+    }
+
+    /**
+     * Display quiz update form
+     * 
+     * @param int $id Quiz database ID
+     */
+    public function updateForm(int $id): AbstractView
+    {
+        $quiz = Quiz::findById($id);
+
+        return new StandardView(
+            [ 'quiz/edit' ],
+            [ 'quiz' => $quiz ]
+        );
+    }
+
+    /**
+     * Process quiz update form
+     * 
+     * @param int $id Quiz database ID
+     */
+    public function update(int $id): AbstractView
+    {
+        $quiz = Quiz::findById($id);
 
         $quiz
             ->setTitle($_POST['title'])
