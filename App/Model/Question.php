@@ -193,7 +193,7 @@ final class Question extends AbstractModel
      */
     public function setRightAnswer(Answer $answer): self
     {
-        return $this->setManyToOne($Answer, 'rightAnswerId');
+        return $this->setManyToOne($answer, 'rightAnswerId');
     }
 
     /**
