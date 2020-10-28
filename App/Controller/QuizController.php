@@ -63,4 +63,14 @@ class QuizController
             [ 'quiz' => $quiz ]
         );
     }
+
+    /**
+     * Display quiz creation form
+     */
+    public function createForm(): AbstractView
+    {
+        return new StandardView(
+            [ 'quiz/edit' ],
+        );
+    }
 }
