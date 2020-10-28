@@ -56,6 +56,7 @@ try {
     $router->map('POST', '/question/[i:id]/give-answer', 'QuestionController#processAnswer');
     $router->map('GET', '/create', 'MainController#create');
     $router->map('GET', '/quiz/new', 'QuizController#createForm');
+    $router->map('POST', '/quiz/new', 'QuizController#create');
     // Prend la requête actuelle et cherche une correspondance avec les routes connues
     $match = $router->match();
 

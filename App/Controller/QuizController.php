@@ -73,4 +73,21 @@ class QuizController
             [ 'quiz/edit' ],
         );
     }
+
+    /**
+     * Process quiz creation form
+     */
+    public function create()
+    {
+        $quiz = new Quiz;
+
+        $quiz
+            ->setTitle($_POST['title'])
+            ->setDescription($_POST['description'])
+        ;
+
+        $quiz->save();
+
+        header('Location: /create');
+    }
 }
