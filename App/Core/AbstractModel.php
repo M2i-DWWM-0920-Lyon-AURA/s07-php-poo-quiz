@@ -384,9 +384,6 @@ abstract class AbstractModel
         // Fusionne le tableau en joignant chaque élément avec un saut de ligne (\n)
         $query = join("\n", $queryArray);
 
-        var_dump([$query, $params]);
-        die();
-
         // Prépare la requête et l'exécute en injectant les valeurs de l'objet actuel
         $statement = DatabaseHandler::prepare($query);
         $statement->execute($params);
