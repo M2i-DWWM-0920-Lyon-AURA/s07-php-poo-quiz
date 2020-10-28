@@ -31,7 +31,7 @@
                                         <label for="exampleInputEmail1">Description</label>
                                         <input name="description" type="text" class="form-control" value="<?= $question->getDescription() ?>">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Enregistrer les mnodifications</button>
+                                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
                                 </form>
                             </div>
                         </div>
