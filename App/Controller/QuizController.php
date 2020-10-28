@@ -9,6 +9,15 @@ use App\Exception\RecordNotFoundException;
 
 class QuizController
 {
+    // ================================================================
+    // Méthodes internes
+    // ----------------------------------------------------------------
+    // ~ Ces méthodes correspondent à des traitements internes
+    // réalisés uniquement à l'intérieur de la classe. Elles sont
+    // donc protégées afin d'empêcher d'autres processus de les
+    // appeler.
+    // ================================================================
+
     /**
      * Get quiz by id and throws error if quiz is null
      * 
@@ -16,23 +25,37 @@ class QuizController
      */
     protected function findQuizByIdOrException(int $id): Quiz
     {
+        // Récupère le quiz demandé dans la base de données
         $quiz = Quiz::findById($id);
 
         // Si le quiz n'existe pas
         if (is_null($quiz)) {
+            // Envoie une erreur
             throw new RecordNotFoundException("Quiz #$id could not be found.");
         }
         
+        // Sinon, renvoie le quiz normalement
         return $quiz;
     }
+
+    // ================================================================
+    // Méthodes corespondant à des routes
+    // ----------------------------------------------------------------
+    // ~ Ces méthodes correspondent chacune à une route définie dans
+    // le routeur. Elles sont donc publiques afin de pouvoir être
+    // appelée par le Front controller.
+    // ================================================================
 
     /**
      * Display all quizzes
      */
     public function list(): AbstractView
     {
+        // Renvoie une nouvelle vue...
         return new StandardView(
+            // ...contenant la page affichant la liste des quiz auxquels on peut jouer...
             [ 'quiz/list' ],
+            // ...ainsi que la liste de tous les quiz
             [ 'quizzes' => Quiz::findAll() ]
         );
     }
@@ -44,12 +67,14 @@ class QuizController
      */
     public function single(int $id): AbstractView
     {
-        // Récupère le quiz correspondant à l'ID demandé
+        // Récupère le quiz demandé en vérifiant qu'il existe
         $quiz = $this->findQuizByIdOrException($id);
 
-        // Renvoie une vue permettant d'afficher les données d'un seul quiz
+        // Renvoie une nouvelle vue...
         return new StandardView(
+            // ...contenant la page affichant les détails d'un quiz...
             [ 'quiz/single', ],
+            // ...ainsi que les données du quiz
             [ 'quiz' => $quiz ]
         );
     }
@@ -61,12 +86,14 @@ class QuizController
     {
         \session_start();
 
-        // Récupère le quiz correspondant à l'ID demandé
+        // Récupère le quiz demandé en vérifiant qu'il existe
         $quiz = $this->findQuizByIdOrException($id);
 
-        // Renvoie une vue permettant d'afficher les données d'un seul quiz
+        // Renvoie une nouvelle vue...
         return new StandardView(
+            // ...contenant l'alerte à afficher, la page de résultat...
             [ 'common/alert', 'quiz/result' ],
+            // ...ainsi que les données du quiz
             [ 'quiz' => $quiz ]
         );
     }
@@ -76,9 +103,15 @@ class QuizController
      */
     public function createForm(): AbstractView
     {
+        // Crée un nouveau quiz
+        $quiz = new Quiz;
+
+        // Renvoie une nouvelle vue...
         return new StandardView(
+            // ...contenant le formulaire de modification d'un quiz...
             [ 'quiz/edit' ],
-            [ 'quiz' => new Quiz ]
+            // ...ainsi que les donneés du quiz
+            [ 'quiz' => $quiz ]
         );
     }
 
@@ -87,15 +120,19 @@ class QuizController
      */
     public function create()
     {
+        // Crée un nouveau quiz
         $quiz = new Quiz;
 
+        // Assigne le contenu du formulaire aux propriétés de l'objet
         $quiz
             ->setTitle($_POST['title'])
             ->setDescription($_POST['description'])
         ;
 
+        // Sauvegarde le quiz en base de données
         $quiz->save();
 
+        // Redirige vers la page "Création"
         header('Location: /create');
     }
 
@@ -106,10 +143,14 @@ class QuizController
      */
     public function updateForm(int $id): AbstractView
     {
+        // Récupère le quiz demandé en vérifiant qu'il existe
         $quiz = $this->findQuizByIdOrException($id);
         
+        // Renvoie une nouvelle vue...
         return new StandardView(
+            // ...contenant le formulaire de modification d'un quiz...
             [ 'quiz/edit' ],
+            // ...ainsi que les donneés du quiz
             [ 'quiz' => $quiz ]
         );
     }
@@ -121,15 +162,19 @@ class QuizController
      */
     public function update(int $id)
     {
+        // Récupère le quiz demandé en vérifiant qu'il existe
         $quiz = $this->findQuizByIdOrException($id);
 
+        // Assigne le contenu du formulaire aux propriétés de l'objet
         $quiz
             ->setTitle($_POST['title'])
             ->setDescription($_POST['description'])
         ;
 
+        // Sauvegarde le quiz en base de données
         $quiz->save();
 
+        // Redirige vers la page "Création"
         header('Location: /create');
     }
 
@@ -140,10 +185,13 @@ class QuizController
      */
     public function delete(int $id)
     {
+        // Récupère le quiz demandé en vérifiant qu'il existe
         $quiz = $this->findQuizByIdOrException($id);
 
+        // Supprime le quiz en base de données
         $quiz->delete();
 
+        // Redirige vers la page "Création"
         header('Location: /create');
     }
 }

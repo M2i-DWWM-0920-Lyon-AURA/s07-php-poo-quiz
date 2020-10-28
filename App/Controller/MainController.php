@@ -13,7 +13,9 @@ class MainController
      */
     public function home(): AbstractView
     {
+        // Renvoie une nouvelle vue...
         return new StandardView(
+            // ...contenant la page d'accueil
             [ 'main/home' ]
         );
     }
@@ -23,8 +25,11 @@ class MainController
      */
     public function create(): AbstractView
     {
+        // Renvoie une nouvelle vue...
         return new StandardView(
+            // ...contenant la page de création de quiz...
             [ 'main/create' ],
+            // ...ainsi que la liste de tous les quiz
             [ 'quizzes' => Quiz::findAll() ]
         );
     }
