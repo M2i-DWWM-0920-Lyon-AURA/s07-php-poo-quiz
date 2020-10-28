@@ -11,7 +11,7 @@
                 <ul class="list-group">
                     <?php foreach ($question->getAnswers() as $answer): ?>
                     <li class="list-group-item">
-                        <?= $answer->getDescription() ?>
+                        <strong>Réponse <?= $answer->getRank() ?>:</strong> <?= $answer->getDescription() ?>
                     </li>
                     <?php endforeach; ?>
                 </ul>
@@ -25,7 +25,9 @@
 
 <form method="post" action="/question/new">
     <div class="form-group">
-        <input type="text" class="form-control" placeholder="Entrez votre nouvelle question ici">
+        <input name="rank" type="hidden" value="<?= count($quiz->getQuestions()) + 1 ?>" />
+        <input name="quiz-id" type="hidden" value="<?= $quiz->getId() ?>" />
+        <input name="description" type="text" class="form-control" placeholder="Entrez votre nouvelle question ici">
         <button type="submit" class="btn btn-primary">
             Ajouter une question
         </button>

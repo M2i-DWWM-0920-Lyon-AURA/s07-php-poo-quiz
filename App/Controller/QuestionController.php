@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Model\Quiz;
+use App\Model\Answer;
 use App\Model\Question;
 use App\Core\AbstractView;
 use App\View\StandardView;
@@ -76,5 +78,48 @@ class QuestionController
         }
         // Redirige sur la page de la question suivante
         header('Location: /question/' . $nextQuestion->getId());
+    }
+
+    /**
+     * Process create question form
+     */
+    public function create()
+    {
+        // Crée une nouvelle question
+        $question = new Question;
+
+        // Récupère le quiz à associer à la question
+        $quiz = Quiz::findById($_POST['quiz-id']);
+
+        // Assigne les valeurs envoyées par l'utilisateur aux propriétés de la question
+        $question
+            ->setDescription($_POST['description'])
+            ->setRank($_POST['rank'])
+            ->setQuiz($quiz)
+        ;
+
+        // Sauvegarde la question en base de données
+        $question->save();
+
+        // Crée une nouvelle réponse
+        $answer = new Answer;
+
+        // Associe la réponse à la question créée précédemment
+        $answer
+            ->setQuestion($question)
+            ->setDescription('Réponse 1')
+            ->setRank(1)
+        ;
+
+        // Sauvegarde la réponse en base de données
+        $answer->save();
+
+        // Définit la bonne réponse à la question créée comme étant la réponse créée
+        $question->setRightAnswer($answer);
+
+        $question->save();
+
+        // Renvoie sur le formulaire de modification de quiz
+        header('Location: /quiz/' . $quiz->getId() . '/update');
     }
 }
